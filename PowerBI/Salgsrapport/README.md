@@ -1,2 +1,3 @@
-Download pbit file
-DAX + Datamodel
+Download pbit fil
+Indeholder: 
+Power Query + DAX + Datamodel
