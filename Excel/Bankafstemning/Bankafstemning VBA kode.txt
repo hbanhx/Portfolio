@@ -1,0 +1,521 @@
+Option Explicit
+
+
+Sub MatchPosting()
+
+Dim BankDate As Date
+Dim BankDescription As String
+Dim BankAmount As Double
+Dim TransDaysTolerance As String
+
+Dim i As Integer
+Dim j As Integer
+Dim l As Integer
+
+Dim m As Integer
+Dim n As Integer
+Dim r As Range
+Dim s As Range
+
+
+Set r = Worksheets("Bank").Range("A1") 'bankkontoudtog
+Set s = Worksheets("Navision").Range("A1") 'navision
+
+m = r.CurrentRegion.Rows.Count 'bank
+n = s.CurrentRegion.Rows.Count 'navision
+
+
+
+':::: Prepare Sheets
+Call Prepare(m, n)
+
+
+
+':::: For each banktransaction check for ERP posting
+TransDaysTolerance = InputBox("Angiv bankdage tolerance (antal dage)", , 0)
+If TransDaysTolerance = Empty Or IsNumeric(TransDaysTolerance) = False Then
+    MsgBox ("Start igen og indtast et tal")
+    Exit Sub
+End If
+
+
+Application.ScreenUpdating = False
+
+
+
+i = 2
+l = 1
+While Worksheets("Bank").Cells(i, 1) <> Empty
+j = 2
+
+    BankDate = Format(Worksheets("Bank").Cells(i, 1), "dd-mm-yyyy")
+    BankDescription = Worksheets("Bank").Cells(i, 2)
+    BankAmount = Worksheets("Bank").Cells(i, 3)
+
+    
+    
+    Call SubAmountMatch(TransDaysTolerance, i, j, l, BankAmount, BankDate)
+
+
+
+
+i = i + 1
+Wend
+
+
+Call FxClose(m, n)
+
+
+Call ReverseTransaction(m, n)
+
+
+Call Unmatched(TransDaysTolerance, m, n)
+
+
+
+Worksheets("Bank").Activate
+Worksheets("Bank").Range("A1:G" & m).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes 'sort dato beløb
+Worksheets("Navision").Activate
+Worksheets("Navision").Range("A1:G" & n).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes
+
+
+
+Worksheets(ThisWorkbook.Sheets.Count).Activate
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub Prepare(m, n)
+Dim l As Integer
+Dim DateFormat As Date
+
+For l = 2 To m
+    DateFormat = Format(Worksheets("Bank").Cells(l, 1), "dd-mm-yyyy")
+    Worksheets("Bank").Cells(l, 1) = DateFormat
+
+Next
+
+For l = 2 To n
+    DateFormat = Format(Worksheets("Navision").Cells(l, 1), "dd-mm-yyyy")
+    Worksheets("Navision").Cells(l, 1) = DateFormat
+
+Next
+
+Worksheets("Bank").Activate
+Worksheets("Bank").Range("F:H").Clear
+Worksheets("Bank").Range("A1:F" & m).Sort key1:=Range("A1"), Order1:=xlAscending, key2:=Range("C1"), Order2:=xlAscending, Header:=xlYes 'sort dato beløb
+Worksheets("Navision").Activate
+Worksheets("Navision").Range("F:H").Clear
+Worksheets("Navision").Range("A1:F" & n).Sort key1:=Range("A1"), Order1:=xlAscending, key2:=Range("C1"), Order2:=xlAscending, Header:=xlYes
+Worksheets("Bank").Activate
+
+Worksheets("Bank").Cells(1, 7) = "Status"
+Worksheets("Navision").Cells(1, 7) = "Status"
+
+
+
+
+End Sub
+
+
+Sub SubAmountMatch(TransDaysTolerance, i, j, l, BankAmount, BankDate)
+Dim ErpAmount As Double
+Dim ErpDate As Date
+Dim DateMatch As Boolean
+Dim AmountMatch As Boolean
+Dim Unmatched As Boolean
+
+While Worksheets("Navision").Cells(j, 1) <> Empty
+    ErpAmount = Worksheets("Navision").Cells(j, 3)
+    ErpDate = Worksheets("Navision").Cells(j, 1)
+
+    
+    
+    If Worksheets("Navision").Cells(j, 7) = Empty Then
+        Unmatched = True
+
+    End If
+    
+    
+    
+    If BankAmount = ErpAmount Then
+        AmountMatch = True
+
+    End If
+
+    
+
+
+
+    If ErpDate - TransDaysTolerance <= BankDate And BankDate <= ErpDate + TransDaysTolerance Then
+        DateMatch = True
+          
+    End If
+
+
+
+
+
+    If Unmatched = True _
+        And AmountMatch = True _
+        And DateMatch = True Then
+        
+        Worksheets("Bank").Cells(i, 7) = "Matched # " & l
+        Worksheets("Navision").Cells(j, 7) = "Matched # " & l
+        l = l + 1
+        
+        Unmatched = False
+        AmountMatch = False
+        DateMatch = False
+        
+        GoTo NextBankItem
+        
+    Else
+        j = j + 1
+        
+        Unmatched = False
+        AmountMatch = False
+        DateMatch = False
+    
+    End If
+Wend
+
+
+NextBankItem:
+End Sub
+
+
+Sub FxClose(m, n)
+Dim i As Integer
+Dim j As Integer
+Dim k As Integer
+Dim l As Integer
+Dim r As Range
+Dim s As Range
+
+Dim o As Integer
+'Dim p As Integer
+
+Dim BankDate As Date
+Dim BankAmount As Double
+Dim ErpDate As Date
+Dim ErpAmount As Double
+
+Dim FxAdj As Double
+Dim FxAdjDate As Date
+
+Worksheets("Bank").Activate
+Worksheets("Bank").Range("A1:G" & m).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes 'sort dato beløb
+Worksheets("Navision").Activate
+Worksheets("Navision").Range("A1:G" & n).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes
+Worksheets("Bank").Activate
+
+
+Set r = Worksheets("Bank").Range("G1") 'bankkontoudtog
+Set s = Worksheets("Navision").Range("G1") 'navision
+
+i = r.CurrentRegion.Rows.Count + 1 'bank
+j = s.CurrentRegion.Rows.Count + 1 'navision
+
+
+
+l = 1
+Do While Worksheets("Bank").Cells(i, 1) <> Empty
+o = j
+    
+    BankDate = Format(Worksheets("Bank").Cells(i, 1), "dd-mm-yyyy")
+    BankAmount = Worksheets("Bank").Cells(i, 3)
+    
+    
+    
+    
+    Do While Worksheets("Navision").Cells(o, 1) <> Empty
+    k = 1
+        
+        
+        
+        
+        
+        'Check Matched
+        If Worksheets("Navision").Cells(o, 7) = Empty Then
+            ErpDate = Worksheets("Navision").Cells(o, 1)
+            ErpAmount = Worksheets("Navision").Cells(o, 3)
+        
+        Else
+
+            GoTo NextErpItem
+            
+        End If
+        
+        
+        
+        
+        Do While Worksheets("Navision").Cells(o + k, 1) <> Empty
+            FxAdj = Worksheets("Navision").Cells(o + k, 3)
+            FxAdjDate = Worksheets("Navision").Cells(o + k, 1)
+            
+            
+            'Check Matched, date and sum match
+            If Worksheets("Navision").Cells(o + k, 7) = Empty _
+                And BankAmount = ErpAmount + FxAdj Then
+                
+                    Worksheets("Bank").Cells(i, 7) = "Matched FX #" & l
+                    Worksheets("Navision").Cells(o, 7) = "Matched FX #" & l
+                    Worksheets("Navision").Cells(o + k, 7) = "Matched FX #" & l
+                    
+                    l = l + 1
+                    GoTo NextBankItem
+                
+            Else
+                    k = k + 1
+            
+
+        
+            End If
+        
+        
+
+        
+        Loop
+        
+
+
+NextErpItem:
+o = o + 1
+    Loop
+    
+NextBankItem:
+i = i + 1
+Loop
+
+
+End Sub
+
+Sub ReverseTransaction(m, n)
+Dim j As Integer
+Dim k As Integer
+Dim l As Integer
+Dim s As Range
+
+Dim ErpDate As Date
+Dim ErpAmount As Double
+
+Dim ReverseTransDate As Date
+Dim ReverseTransAmount As Double
+
+Worksheets("Bank").Activate
+Worksheets("Bank").Range("A1:G" & m).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes 'sort dato beløb
+Worksheets("Navision").Activate
+Worksheets("Navision").Range("A1:G" & n).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes
+Worksheets("Bank").Activate
+
+
+Set s = Worksheets("Navision").Range("G1") 'navision
+j = s.CurrentRegion.Rows.Count + 1 'navision
+
+l = 1
+Do While Worksheets("Navision").Cells(j, 1) <> Empty
+
+
+
+    If Worksheets("Navision").Cells(j, 7) = Empty Then
+        ErpDate = Worksheets("Navision").Cells(j, 1)
+        ErpAmount = Worksheets("Navision").Cells(j, 3)
+    
+    Else
+        GoTo NextErpItem
+        
+    End If
+    
+    
+    'check for 1 post reverse transaction
+    k = 1
+    Do While Worksheets("Navision").Cells(j + k, 1) <> Empty
+        
+        ReverseTransDate = Worksheets("Navision").Cells(j + k, 1)
+        ReverseTransAmount = Worksheets("Navision").Cells(j + k, 3)
+        
+        If ReverseTransDate > ErpDate Then
+            GoTo NextErpItem
+        End If
+        
+                
+                
+            If Worksheets("Navision").Cells(j + k, 7) = Empty _
+                And ErpDate = ReverseTransDate _
+                And 0 = ErpAmount + ReverseTransAmount Then
+            
+                Worksheets("Navision").Cells(j, 7) = "Matched Reverse Transaction #" & l
+                Worksheets("Navision").Cells(j + k, 7) = "Matched Reverse Transaction #" & l
+                l = l + 1
+                GoTo NextErpItem
+        
+            Else
+                k = k + 1
+        
+            End If
+    
+    Loop
+    
+    
+    'check for 2 post2 reverse transaction
+    
+    
+    
+    
+    
+NextErpItem:
+j = j + 1
+Loop
+
+
+End Sub
+
+Sub Unmatched(TransDaysTolerance, m, n)
+Dim i As Integer
+Dim j As Integer
+Dim k As Integer
+
+Dim Name As String
+
+Dim BankDate As Date
+Dim BankDescription As String
+Dim BankAmount As Double
+Dim ErpDate As Date
+Dim ErpDescription As String
+Dim ErpAmount As Double
+
+Dim NumBank As Integer
+Dim NumErp As Integer
+
+Dim r As Range
+Dim s As Range
+
+Worksheets("Bank").Activate
+Worksheets("Bank").Range("A1:G" & m).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes 'sort dato beløb
+Worksheets("Navision").Activate
+Worksheets("Navision").Range("A1:G" & n).Sort key1:=Range("G1"), Order1:=xlAscending, key2:=Range("A1"), Order2:=xlAscending, key3:=Range("C1"), Order2:=xlAscending, Header:=xlYes
+Worksheets("Bank").Activate
+
+Set r = Worksheets("Bank").Range("G1") 'bankkontoudtog
+Set s = Worksheets("Navision").Range("G1") 'navision
+
+i = r.CurrentRegion.Rows.Count  'bank
+j = s.CurrentRegion.Rows.Count 'navision
+
+
+With ThisWorkbook
+    .Sheets.Add(After:=.Sheets(.Sheets.Count)).Name = "Unmatched #" & .Sheets.Count & " " & Format(Worksheets("Bank").Cells(2, 1), "yyyy-mm")
+    Name = ActiveSheet.Name '"Unmatched " & .Sheets.Count & " " & Format(Worksheets("Bank").Cells(2, 1), "yyyy-mm")
+End With
+
+'headers
+Worksheets(Name).Cells(1, 1) = "Date"
+Worksheets(Name).Cells(1, 2) = "Description"
+Worksheets(Name).Cells(1, 3) = "Amount"
+
+Worksheets(Name).Cells(3, 1) = "Unmatched Bank"
+
+NumBank = m - i
+If NumBank > 0 Then
+
+    
+    For k = 1 To NumBank
+    
+        Worksheets(Name).Cells(k + 4, 1) = Worksheets("Bank").Cells(i + k, 1)
+        Worksheets(Name).Cells(k + 4, 2) = Worksheets("Bank").Cells(i + k, 2)
+        Worksheets(Name).Cells(k + 4, 3) = Worksheets("Bank").Cells(i + k, 3)
+        
+    Next
+
+End If
+
+Worksheets(Name).Cells(NumBank + 6, 2) = "SUM"
+Worksheets(Name).Cells(NumBank + 6, 3) = WorksheetFunction.Sum(Range(Cells(3, 3), Cells(NumBank + 4, 3)))
+
+
+
+
+
+Worksheets(Name).Cells(NumBank + 9, 1) = "Unmatched ERP"
+
+NumErp = n - j
+If NumErp > 0 Then
+
+
+    For k = 1 To NumErp
+    
+        Worksheets(Name).Cells(NumBank + k + 11, 1) = Worksheets("Navision").Cells(j + k, 1)
+        Worksheets(Name).Cells(NumBank + k + 11, 2) = Worksheets("Navision").Cells(j + k, 2)
+        Worksheets(Name).Cells(NumBank + k + 11, 3) = Worksheets("Navision").Cells(j + k, 3)
+    
+    Next
+
+End If
+
+Worksheets(Name).Cells(NumBank + NumErp + 13, 2) = "SUM"
+Worksheets(Name).Cells(NumBank + NumErp + 13, 3) = WorksheetFunction.Sum(Range(Cells(NumBank + 9, 3), Cells(NumBank + NumErp + 11, 3)))
+
+Worksheets(Name).Cells(NumBank + NumErp + 15, 2) = "Difference in unmatched"
+Worksheets(Name).Cells(NumBank + NumErp + 15, 3) = Worksheets(Name).Cells(NumBank + NumErp + 13, 3) - Worksheets(Name).Cells(NumBank + 6, 3)
+
+Worksheets(Name).Cells(NumBank + NumErp + 17, 2) = "Transactiondays tolerance: " & TransDaysTolerance
+
+
+'stats matrix
+
+Worksheets(ThisWorkbook.Sheets.Count).Cells(4, 7) = "Bank"
+Worksheets(ThisWorkbook.Sheets.Count).Cells(4, 8) = "ERP"
+
+Worksheets(ThisWorkbook.Sheets.Count).Cells(5, 6) = "Total postings"
+Worksheets(ThisWorkbook.Sheets.Count).Cells(6, 6) = "Matched"
+Worksheets(ThisWorkbook.Sheets.Count).Cells(7, 6) = "Unmatched"
+Worksheets(ThisWorkbook.Sheets.Count).Cells(8, 6) = "Percent matched"
+
+Worksheets(ThisWorkbook.Sheets.Count).Cells(5, 7) = WorksheetFunction.CountA(Worksheets("Bank").Columns("A:A")) - 1
+Worksheets(ThisWorkbook.Sheets.Count).Cells(6, 7) = WorksheetFunction.CountA(Worksheets("Bank").Columns("G:G")) - 1
+Worksheets(ThisWorkbook.Sheets.Count).Cells(7, 7) = Worksheets(ThisWorkbook.Sheets.Count).Cells(5, 7) - Worksheets(ThisWorkbook.Sheets.Count).Cells(6, 7)
+Worksheets(ThisWorkbook.Sheets.Count).Cells(8, 7) = Worksheets(ThisWorkbook.Sheets.Count).Cells(6, 7) / Worksheets(ThisWorkbook.Sheets.Count).Cells(5, 7) * 100
+
+
+Worksheets(ThisWorkbook.Sheets.Count).Cells(5, 8) = WorksheetFunction.CountA(Worksheets("Navision").Columns("A:A")) - 1
+Worksheets(ThisWorkbook.Sheets.Count).Cells(6, 8) = WorksheetFunction.CountA(Worksheets("Navision").Columns("G:G")) - 1
+Worksheets(ThisWorkbook.Sheets.Count).Cells(7, 8) = Worksheets(ThisWorkbook.Sheets.Count).Cells(5, 8) - Worksheets(ThisWorkbook.Sheets.Count).Cells(6, 8)
+Worksheets(ThisWorkbook.Sheets.Count).Cells(8, 8) = Worksheets(ThisWorkbook.Sheets.Count).Cells(6, 8) / Worksheets(ThisWorkbook.Sheets.Count).Cells(5, 8) * 100
+
+
+
+
+'Worksheets(Name).Cells(NumBank + NumErp + 15, 2).Interior.Color = RGB(255, 0, 0) '.Font.Bold = True
+Worksheets(Name).Cells(NumBank + NumErp + 15, 3).Interior.Color = RGB(255, 255, 0) '.Font.Bold = True
+
+
+Columns("A:A").Select
+Selection.NumberFormat = "dd-mm-yyyy"
+Columns("C:C").Select
+Selection.NumberFormat = "#,##0.00"
+Range("G8:H8").Select
+Selection.NumberFormat = "#,##0.00"
+Columns("A:F").AutoFit
+Worksheets(Name).Cells(NumBank + NumErp + 15, 3).Select
+
+
+End Sub
+
+Sub ResetSheet()
+
+Worksheets("Bank").Columns("A:H").Clear
+Worksheets("Bank").Cells(1, 1) = "Date"
+Worksheets("Bank").Cells(1, 2) = "Description"
+Worksheets("Bank").Cells(1, 3) = "Amount"
+Worksheets("Bank").Cells(1, 7) = "Status"
+
+Worksheets("Navision").Columns("A:H").Clear
+Worksheets("Navision").Cells(1, 1) = "Date"
+Worksheets("Navision").Cells(1, 2) = "Description"
+Worksheets("Navision").Cells(1, 3) = "Amount"
+Worksheets("Navision").Cells(1, 7) = "Status"
+
+
+End Sub
