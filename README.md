@@ -15,5 +15,5 @@ ETL‑pipeline til synkronisering af fakturaer og kreditnotaer mellem to Busines
 Indeholder VAT‑afstemning, import‑ordre‑identifikation, datamaskering og master‑dataset baseret på konfigurationsstyrede SQL‑udtræk.  
 Repo: https://github.com/hbanhx/etl_intercompany_transactions
 
-### Open Food Facts API Integrtion 
+### Open Food Facts API Integration
 Repo: https://github.com/hbanhx/openfoodfacts
