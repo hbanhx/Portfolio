@@ -1,5 +1,11 @@
 # Portfolio - Python / MSSQL
 
+### Integrationsplatform
+Igangværende udvikling af en integrationsplatform bestående af mock‑API’er i FastAPI (Amazon, Business Central og SAP) samt en integration‑client, der udveksler data mellem systemerne. Platformen bruges som grundlag for ETL‑projekter i Python og SQL.
+        - mock_amazon_api
+        - mock_bc_api
+        - mock_sap_api
+
 ### ETL Amazon Orders Integration (Python, SQL)
 Proces til rensning, berigelse og strukturering af Amazon ordre‑eksporter.  
 Beregner enhedspriser, VAT‑procenter, validerer ordredata og genererer Sales Header og Sales Line datasets til Business Central.  
@@ -14,6 +20,3 @@ Repo: https://github.com/hbanhx/etl_amazon_transactions
 ETL‑pipeline til synkronisering af fakturaer og kreditnotaer mellem to Business Central‑selskaber.  
 Indeholder VAT‑afstemning, import‑ordre‑identifikation, datamaskering og master‑dataset baseret på konfigurationsstyrede SQL‑udtræk.  
 Repo: https://github.com/hbanhx/etl_intercompany_transactions
-
-### Open Food Facts API Integration
-Repo: https://github.com/hbanhx/openfoodfacts
