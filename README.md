@@ -2,8 +2,11 @@
 
 ### Integrationsplatform
 Igangværende udvikling af en integrationsplatform bestående af mock‑API’er i FastAPI (Amazon, Business Central og SAP) samt en integration‑client, der udveksler data mellem systemerne. Platformen bruges som grundlag for ETL‑projekter i Python og SQL.
+
         - mock_amazon_api
+
         - mock_bc_api
+        
         - mock_sap_api
 
 ### ETL Amazon Orders Integration (Python, SQL)
