@@ -9,10 +9,14 @@ Igangværende udvikling af en integrationsplatform bestående af mock‑API’er
         
         - mock_sap_api
 
-### ETL Amazon Orders Integration (Python, SQL)
-Proces til rensning, berigelse og strukturering af Amazon ordre‑eksporter.  
-Beregner enhedspriser, VAT‑procenter, validerer ordredata og genererer Sales Header og Sales Line datasets til Business Central.  
+### ETL Amazon Orders Integration (Python, FastAPI, SQL)
+ETL‑proces der henter ordredata fra en egenudviklet FastAPI Amazon Orders‑API,  
+renser og beriger rå Amazon‑eksporter, beregner enhedspriser og VAT‑procenter,  
+validerer ordredata og genererer strukturerede Sales Header og Sales Line‑datasets  
+til videre indlæsning i Business Central.
+
 Repo: https://github.com/hbanhx/etl_amazon_orders
+
 
 ### ETL Amazon Transactions & Payments Integration (Python, SQL)
 Løsning til match mellem Amazon‑betalinger og ERP‑posteringer.  
