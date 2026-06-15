@@ -13,7 +13,7 @@ Igangværende udvikling af en integrationsplatform bestående af mock‑API’er
 ETL‑proces der henter ordredata fra en egenudviklet FastAPI Amazon Orders‑API,  
 renser og beriger rå Amazon‑eksporter, beregner enhedspriser og VAT‑procenter,  
 validerer ordredata og genererer strukturerede Sales Header og Sales Line‑datasets  
-til videre indlæsning i Business Central.
+til videre indlæsning i mock Business Central.
 
 Repo: https://github.com/hbanhx/etl_amazon_orders
 
