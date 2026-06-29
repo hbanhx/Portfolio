@@ -8,6 +8,8 @@ Igangværende udvikling af en integrationsplatform bestående af mock‑API’er
         - mock_bc_api
         
         - mock_sap_api
+Repo: https://github.com/hbanhx/integration_platform
+
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
 ETL‑proces der henter ordredata fra en egenudviklet FastAPI Amazon Orders‑API,  
