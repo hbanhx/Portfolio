@@ -1,14 +1,14 @@
 # Portfolio - Python / MSSQL
 
-### Integrationsplatform
-Igangværende udvikling af en integrationsplatform bestående af mock‑API’er i FastAPI (Amazon, Business Central og SAP) samt en integration‑client, der udveksler data mellem systemerne. Platformen bruges som grundlag for ETL‑projekter i Python og SQL.
+### FastAPI
+Arbejder med mock‑API’er i FastAPI (fx Amazon, Business Central og SAP), der udveksler data mellem systemerne, og er tænkt som grundlag for ETL‑projekter i Python og SQL.
 
         - mock_amazon_api
 
         - mock_bc_api
         
         - mock_sap_api
-Repo: https://github.com/hbanhx/integration_platform
+Repo: https://github.com/hbanhx/FastAPI
 
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
