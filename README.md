@@ -1,15 +1,5 @@
 # Portfolio - Python / SQL / Power BI / Excel 
 
-### FastAPI
-Arbejder med mock‑API’er i FastAPI (fx Amazon, Business Central og SAP), der udveksler data mellem systemerne, og er tænkt som grundlag for ETL‑projekter i Python og SQL.
-
-        - mock_amazon_api
-
-        - mock_bc_api
-        
-        - mock_sap_api
-Repo: https://github.com/hbanhx/FastAPI
-
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
 ETL‑proces der henter ordredata fra en egenudviklet FastAPI Amazon Orders‑API,  
@@ -23,9 +13,23 @@ Repo: https://github.com/hbanhx/etl_amazon_orders
 ### ETL Amazon Transactions & Payments Integration (Python, SQL)
 Løsning til match mellem Amazon‑betalinger og ERP‑posteringer.  
 Indeholder transaktionsmatch, beløbsmeltning, journalgenerering og datamaskering.  
+
 Repo: https://github.com/hbanhx/etl_amazon_transactions
+
 
 ### ETL Intercompany Transactions & VAT Reconciliation (Python, SQL)
 ETL‑pipeline til synkronisering af fakturaer og kreditnotaer mellem to Business Central‑selskaber.  
 Indeholder VAT‑afstemning, import‑ordre‑identifikation, datamaskering og master‑dataset baseret på konfigurationsstyrede SQL‑udtræk.  
+
 Repo: https://github.com/hbanhx/etl_intercompany_transactions
+
+### FastAPI
+Arbejder med mock‑API’er i FastAPI (fx Amazon, Business Central og SAP), der udveksler data mellem systemerne, og er tænkt som grundlag for ETL‑projekter i Python og SQL.
+
+        - mock_amazon_api
+
+        - mock_bc_api
+        
+        - mock_sap_api
+
+Repo: https://github.com/hbanhx/FastAPI
