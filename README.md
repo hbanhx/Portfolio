@@ -2,15 +2,20 @@
 
 - Python / SQL / Power BI / Excel / API
 
+### etl_dmi (Python, PostgreSQL, Docker)
+Dette er en extract, transform og load pipeline, som henter data fra DMI Open Data API (Frie Data), transformerer og loader vejrdata til SQL database. 
+
+Danmarks Meteorologiske Institut: https://www.dmi.dk/frie-data
+
+Repo: https://github.com/hbanhx/etl_dmi
+
 ### myDmi Open Data API (Python, FastAPI, PostgreSQL)
-myDmi er et API projekt, der udstiller data fra DMI Open Data API (Frie Data) - Danmarks Meteorologiske Institut
-https://www.dmi.dk/frie-data
+myDmi er et API projekt, der udstiller det data, som bliver hentet fra DMI Open Data API i etl_dmi app. 
 
-myDmi API er udviklet i forlængelse af projektet: etl_dmi. etl_dmi  henter data fra DMI Open Data API og gemmer data i en SQL database, og myDmi er udviklet på baggrund af denne database.    
-DMI Open Data API -> etl_dmi database -> myDmi API
+myDmi API er udviklet i forlængelse af projektet: etl_dmi. 
+DMI Open Data API -> etl_dmi: database -> myDmi API
 
-https://github.com/hbanhx/my_dmi
-
+Repo: https://github.com/hbanhx/my_dmi
 
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
