@@ -2,6 +2,16 @@
 
 - Python / SQL / Power BI / Excel / API
 
+### myDmi Open Data API (Python, FastAPI, PostgreSQL)
+myDmi er et API projekt, der udstiller data fra DMI Open Data API (Frie Data) - Danmarks Meteorologiske Institut
+https://www.dmi.dk/frie-data
+
+myDmi API er udviklet i forlængelse af projektet: etl_dmi. etl_dmi  henter data fra DMI Open Data API og gemmer data i en SQL database, og myDmi er udviklet på baggrund af denne database.    
+DMI Open Data API -> etl_dmi database -> myDmi API
+
+https://github.com/hbanhx/my_dmi
+
+
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
 ETL‑proces der henter ordredata fra en egenudviklet FastAPI Amazon Orders‑API,  
