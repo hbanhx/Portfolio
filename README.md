@@ -1,4 +1,6 @@
-# Portfolio - Python / SQL / Power BI / Excel 
+# Portfolio
+
+## Python / SQL / Power BI / Excel 
 
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
