@@ -2,7 +2,7 @@
 
 - Python / SQL / Power BI / Excel / API
 
-### etl_dmi (Python, PostgreSQL, Docker)
+### ETL DMI vejrdata (Python, PostgreSQL, Docker)
 Dette er en extract, transform og load pipeline, som henter data fra DMI Open Data API (Frie Data), transformerer og loader vejrdata til SQL database. 
 
 Danmarks Meteorologiske Institut: https://www.dmi.dk/frie-data
@@ -19,24 +19,21 @@ Repo: https://github.com/hbanhx/my_dmi
 
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
-ETL‑proces der henter ordredata fra en egenudviklet FastAPI Amazon Orders‑API,  
-renser og beriger rå Amazon‑eksporter, beregner enhedspriser og VAT‑procenter,  
-validerer ordredata og genererer strukturerede Sales Header og Sales Line‑datasets  
-til videre indlæsning i mock Business Central.
+ETL‑proces der henter ordredata fra en mock Amazon database, transformerer rå data, beregner enhedspriser og moms, validerer data og genererer NAV/BC salgsordrer loader ordrerne til 1. SQL database, 2. mock NAV/Business Central API og 3. til excel.
 
 Repo: https://github.com/hbanhx/etl_amazon_orders
 
 
 ### ETL Amazon Transactions & Payments Integration (Python, SQL)
-Løsning til match mellem Amazon‑betalinger og ERP‑posteringer.  
-Indeholder transaktionsmatch, beløbsmeltning, journalgenerering og datamaskering.  
+Løsning at automatisere manuel bogføringsprocess af Amazon‑betalinger. Der genereres bogføringsjournal udligning af betaling og faktura.
+Der bogføres gebyr, moms og nettoindbetaling.  
 
 Repo: https://github.com/hbanhx/etl_amazon_transactions
 
 
 ### ETL Intercompany Transactions & VAT Reconciliation (Python, SQL)
-ETL‑pipeline til synkronisering af fakturaer og kreditnotaer mellem to Business Central‑selskaber.  
-Indeholder VAT‑afstemning, import‑ordre‑identifikation, datamaskering og master‑dataset baseret på konfigurationsstyrede SQL‑udtræk.  
+ETL‑pipeline til synkronisering af fakturaer og kreditnotaer mellem to NAV/Business Central‑selskaber.  
+Indeholder momsindberetning og afstemning.  
 
 Repo: https://github.com/hbanhx/etl_intercompany_transactions
 
