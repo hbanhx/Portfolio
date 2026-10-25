@@ -25,7 +25,7 @@ Indeholder VAT‑afstemning, import‑ordre‑identifikation, datamaskering og m
 
 Repo: https://github.com/hbanhx/etl_intercompany_transactions
 
-### FastAPI
+### FastAPI (to-do)
 Arbejder med mock‑API’er i FastAPI (fx Amazon, Business Central og SAP), der udveksler data mellem systemerne, og er tænkt som grundlag for ETL‑projekter i Python og SQL.
 
         - mock_amazon_api
