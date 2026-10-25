@@ -1,4 +1,4 @@
-# Portfolio - Python / MSSQL
+# Portfolio - Python / SQL / Power BI / Excel 
 
 ### FastAPI
 Arbejder med mock‑API’er i FastAPI (fx Amazon, Business Central og SAP), der udveksler data mellem systemerne, og er tænkt som grundlag for ETL‑projekter i Python og SQL.
