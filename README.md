@@ -20,8 +20,11 @@ Repo: https://github.com/hbanhx/my_dmi
 
 ### ETL Amazon Orders Integration (Python, FastAPI, SQL)
 ETL‑proces der henter ordredata fra en mock Amazon database, transformerer rå data, beregner enhedspriser og moms, validerer data og genererer NAV/BC salgsordrer loader ordrerne til:
+
         - SQL database, 
+        
         - mock NAV/Business Central API og 
+        
         - til excel
 
 Repo: https://github.com/hbanhx/etl_amazon_orders
