@@ -1,5 +1,6 @@
 # Portfolio
 
+- Udvikling og automatiseringsprojekter
 - Python / SQL / Power BI / Excel / API
 
 ### ETL DMI vejrdata (Python, PostgreSQL, Docker)
