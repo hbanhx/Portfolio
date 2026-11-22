@@ -7,12 +7,16 @@
 
 Opgavesæt udarbejdet af Danske Bank: 
 - Generer et kontoudskrift:
-                - Inputfiler banker.txt og transaktioner.txt 
-                - Statistik og analyser
+    - Inputfiler banker.txt og transaktioner.txt 
+    - Statistik og analyser
 - Fraud detection og AML-håndtering: 
-                - Inputfiler KundeOplysninger.txt og SanctionList.txt.
-                - Match kunder med navne på sanctionlist. Beregn match-procent med Levenshtein Distance og generer en rapport
-  
+    - Inputfiler KundeOplysninger.txt og SanctionList.txt.
+    - Match kunder med navne på sanctionlist. Beregn match-procent med Levenshtein Distance og generer en rapport
+        - SQL database, 
+        
+        - mock NAV/Business Central API og 
+        
+        - til excel
 
 ### ETL DMI vejrdata (Python, PostgreSQL, Docker)
 Dette er en extract, transform og load pipeline, som henter data fra DMI Open Data API (Frie Data), transformerer og loader vejrdata til SQL database. 
@@ -38,6 +42,8 @@ Automatiseringsproces der henter ordredata fra en mock Amazon database, transfor
         - mock NAV/Business Central API og 
         
         - til excel
+
+        
 
 Repo: https://github.com/hbanhx/etl_amazon_orders
 
