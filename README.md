@@ -7,11 +7,15 @@
 
 Opgavesæt udarbejdet af Danske Bank: 
 - Generer et kontoudskrift:
-    - Inputfiler banker.txt og transaktioner.txt 
+    - Inputfiler banker.txt og transaktioner.txt
+    - beregn total-saldo og valutakonvertering (DKK) 
+	- Match filer på reg.nr og 
+	- gruppere på kto.nr 
     - Statistik og analyser
 - Fraud detection og AML-håndtering: 
     - Inputfiler KundeOplysninger.txt og SanctionList.txt.
-    - Match kunder med navne på sanctionlist. Beregn match-procent med Levenshtein Distance og generer en rapport
+    - Match kunder med sanktionspersoner på navn, aliaser, fødselsdato og land.
+    - Beregn match-procent med Levenshtein Distance og generer en rapport
 
 
 ### ETL DMI vejrdata (Python, PostgreSQL, Docker)
