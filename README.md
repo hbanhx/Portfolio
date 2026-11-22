@@ -7,11 +7,11 @@
 
 Opgavesæt udarbejdet af Danske Bank: 
 - Generer et kontoudskrift:
-        - Inputfiler banker.txt og transaktioner.txt 
-        - Statistik og analyser
+                - Inputfiler banker.txt og transaktioner.txt 
+                - Statistik og analyser
 - Fraud detection og AML-håndtering: 
-        - Inputfiler KundeOplysninger.txt og SanctionList.txt.
-        - Match kunder med navne på sanctionlist. Beregn match-procent med Levenshtein Distance og generer en rapport
+                - Inputfiler KundeOplysninger.txt og SanctionList.txt.
+                - Match kunder med navne på sanctionlist. Beregn match-procent med Levenshtein Distance og generer en rapport
   
 
 ### ETL DMI vejrdata (Python, PostgreSQL, Docker)
